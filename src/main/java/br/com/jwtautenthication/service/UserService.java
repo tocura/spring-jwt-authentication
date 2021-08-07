@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @NoArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private UserRepository userRepository;
     private AuthenticationManager authenticationManager;
@@ -40,13 +40,6 @@ public class UserService implements UserDetailsService {
         this.jwtUtils = jwtUtils;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return this.userRepository
-                .findUserByLogin(login)
-                .orElseThrow(InvalidCredentialsException::new);
-    }
-
     public LoginResponseDTO login(LoginRequestDTO login) {
         try {
             authenticationManager.authenticate(
@@ -57,21 +50,23 @@ public class UserService implements UserDetailsService {
             throw new InvalidCredentialsException();
         }
 
-        UserDetails user = loadUserByUsername(login.getLogin());
+        User user = this.userRepository
+                .findUserByLogin(login.getLogin())
+                .orElseThrow(InvalidCredentialsException::new);
 
-        String token = this.jwtUtils.generateToken((User) user);
+        String token = this.jwtUtils.generateToken(user);
 
         return new LoginResponseDTO(login.getLogin(), token);
     }
 
     public LoginResponseDTO signUp(User user) {
-        this.userRepository
-                .findUserByLogin(user.getLogin())
-                .orElseThrow(() -> new UniqueViolationException("Login"));
+        if(this.userRepository.findUserByLogin(user.getLogin()).isPresent()) {
+            throw new UniqueViolationException("Login");
+        }
 
-        this.userRepository
-                .findUserByEmail(user.getEmail())
-                .orElseThrow(() -> new UniqueViolationException("Email"));
+        if( this.userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+            throw new UniqueViolationException("Email");
+        }
 
         user.setPassword(encoder.encode(user.getPassword()));
 

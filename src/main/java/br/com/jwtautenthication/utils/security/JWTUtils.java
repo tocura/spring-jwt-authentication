@@ -1,9 +1,8 @@
 package br.com.jwtautenthication.utils.security;
 
+import br.com.jwtautenthication.exceptions.InvalidTokenException;
 import br.com.jwtautenthication.model.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -41,9 +40,15 @@ public class JWTUtils {
         return createToken(claims, user.getLogin());
     }
 
-    public boolean validateToken(String token, User user) {
+    public boolean validateToken(String token) {
         final String login = extractLogin(token);
-        return (login.equals(user.getLogin()) && !isTokenExpired(token));
+
+        try {
+            Jwts.parser().requireSubject(login).setSigningKey(secret).parseClaimsJws(token).getBody();
+            return true;
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | InvalidClaimException e) {
+            throw new InvalidTokenException();
+        }
     }
 
     private Claims extractAllClaims(String token) {

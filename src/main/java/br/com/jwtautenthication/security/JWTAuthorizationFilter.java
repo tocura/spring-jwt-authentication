@@ -3,7 +3,6 @@ package br.com.jwtautenthication.security;
 import br.com.jwtautenthication.service.UserDetailsServiceImpl;
 import br.com.jwtautenthication.utils.security.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

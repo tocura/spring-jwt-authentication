@@ -1,7 +1,6 @@
 package br.com.jwtautenthication.service;
 
 import br.com.jwtautenthication.exceptions.InvalidCredentialsException;
-import br.com.jwtautenthication.model.User;
 import br.com.jwtautenthication.repository.UserRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -44,7 +44,7 @@ public class JWTUtils {
         final String login = extractLogin(token);
 
         try {
-            Jwts.parser().requireSubject(login).setSigningKey(secret).parseClaimsJws(token).getBody();
+            Jwts.parser().requireSubject(login).setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
             return true;
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | InvalidClaimException e) {
             throw new InvalidTokenException();
@@ -52,7 +52,7 @@ public class JWTUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -61,7 +61,7 @@ public class JWTUtils {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
     }
 
     private boolean isTokenExpired(String token) {

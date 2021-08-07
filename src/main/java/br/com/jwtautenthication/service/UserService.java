@@ -75,6 +75,8 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(encoder.encode(user.getPassword()));
 
+        this.userRepository.save(user);
+
         String token = this.jwtUtils.generateToken(user);
 
         return new LoginResponseDTO(user.getLogin(), token);

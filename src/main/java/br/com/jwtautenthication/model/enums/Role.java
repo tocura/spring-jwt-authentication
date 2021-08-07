@@ -5,8 +5,8 @@ import br.com.jwtautenthication.exceptions.ResourceNotFoundException;
 import java.util.Arrays;
 
 public enum Role {
-    ADMIN(1, "ROLE_ADMIN"),
-    USER(2, "ROLE_USER");
+    ROLE_ADMIN(1, "ADMIN"),
+    ROLE_USER(2, "USER");
 
     private Integer id;
     private String name;

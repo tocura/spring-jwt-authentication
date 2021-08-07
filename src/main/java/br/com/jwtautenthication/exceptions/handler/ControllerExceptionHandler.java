@@ -5,6 +5,7 @@ import br.com.jwtautenthication.dtos.FieldValidationDTO;
 import br.com.jwtautenthication.exceptions.InvalidCredentialsException;
 import br.com.jwtautenthication.exceptions.InvalidTokenException;
 import br.com.jwtautenthication.exceptions.ResourceNotFoundException;
+import br.com.jwtautenthication.exceptions.UniqueViolationException;
 import br.com.jwtautenthication.utils.exceptions.FieldErrorUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,11 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ExceptionDTO> invalidTokenHandler(InvalidTokenException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO(e.getMessage()));
+    }
+
+    @ExceptionHandler(UniqueViolationException.class)
+    public ResponseEntity<ExceptionDTO> uniqueViolationHandler(UniqueViolationException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDTO(e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

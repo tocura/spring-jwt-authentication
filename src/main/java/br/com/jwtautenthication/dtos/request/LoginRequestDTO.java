@@ -1,4 +1,4 @@
-package br.com.jwtautenthication.dtos;
+package br.com.jwtautenthication.dtos.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginDTO {
+public class LoginRequestDTO {
 
     @NotNull(message = "The field 'login' is mandatory")
     private String login;

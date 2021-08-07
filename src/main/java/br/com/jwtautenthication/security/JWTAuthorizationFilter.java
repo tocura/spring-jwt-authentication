@@ -1,5 +1,6 @@
 package br.com.jwtautenthication.security;
 
+import br.com.jwtautenthication.service.UserDetailsServiceImpl;
 import br.com.jwtautenthication.service.UserService;
 import br.com.jwtautenthication.utils.security.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private String SECRET;
 
     @Autowired
-    private UserService userService;
+    private UserDetailsServiceImpl userService;
 
     @Autowired
     private JWTUtils jwtUtils;
@@ -41,8 +42,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             String login = jwtUtils.extractLogin(token);
             UserDetails user = userService.loadUserByUsername(login);
             setUpSpringAuthentication(user);
-            filterChain.doFilter(request, response);
         }
+
+        filterChain.doFilter(request, response);
     }
 
     private String extractToken(HttpServletRequest request) {

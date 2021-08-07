@@ -22,9 +22,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
 
-    @Value("${app.secretKey}")
-    private String SECRET;
-
     @Autowired
     private UserDetailsServiceImpl userService;
 

@@ -27,7 +27,7 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<LoginResponseDTO> signUp(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = UserMapper.toEntity(userRequestDTO);
         return ResponseEntity
@@ -35,7 +35,7 @@ public class AuthenticationController {
                 .body(this.userService.signUp(user));
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
